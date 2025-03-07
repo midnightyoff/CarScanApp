@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.carapp.data.model.JournalItem
+import com.example.carapp.domain.model.JournalItem
 import com.example.carapp.presentation.journal.viewmodel.JournalType
 import com.example.carapp.presentation.journal.viewmodel.JournalViewModel
 

@@ -1,4 +1,4 @@
-package com.example.carapp.data.model
+package com.example.carapp.domain.model
 
 data class Car(
     val id: Int = 0,

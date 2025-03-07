@@ -1,4 +1,4 @@
-package com.example.carapp.data.local
+package com.example.carapp.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

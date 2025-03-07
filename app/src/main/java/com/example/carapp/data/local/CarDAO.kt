@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.carapp.data.model.CarEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -5,4 +5,5 @@ sealed class Screen(val route: String) {
     object Main : Screen("main")
     object Settings : Screen("settings")
     object Terminal: Screen("terminal")
+    object ErrorCodes : Screen("error_codes")
 }

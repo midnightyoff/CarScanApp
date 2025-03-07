@@ -3,6 +3,7 @@ package com.example.carapp.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.carapp.data.model.JournalItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carapp.data.local.AppDatabase
-import com.example.carapp.data.local.JournalItemEntity
-import com.example.carapp.data.model.JournalItem
+import com.example.carapp.data.model.JournalItemEntity
+import com.example.carapp.domain.model.JournalItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map

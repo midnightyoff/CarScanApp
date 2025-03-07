@@ -1,4 +1,4 @@
-package com.example.carapp.data.model
+package com.example.carapp.domain.model
 
 import java.util.Date
 

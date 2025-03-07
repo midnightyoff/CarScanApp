@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carapp.data.local.AppDatabase
-import com.example.carapp.data.local.CarEntity
-import com.example.carapp.data.model.Car
+import com.example.carapp.data.model.CarEntity
+import com.example.carapp.domain.model.Car
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {

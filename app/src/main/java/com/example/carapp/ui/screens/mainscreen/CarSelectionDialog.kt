@@ -24,7 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.carapp.data.model.Car
+import com.example.carapp.domain.model.Car
 import com.example.carapp.presentation.mainviewmodel.MainViewModel
 
 @Composable
@@ -42,7 +42,7 @@ fun CarSelectionDialog(
                 if (cars.isEmpty()) {
                     item {
                         Text(
-                            text = "Нет сохраненных автомобилей",
+                            text = "Нет сохраненных автомобилей, добавьте новый в настройках",
                             modifier = Modifier.padding(16.dp)
                         )
                     }

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.carapp.data.model.JournalItem
+import com.example.carapp.domain.model.JournalItem
 import com.example.carapp.presentation.journal.viewmodel.JournalType
 import com.example.carapp.presentation.journal.viewmodel.JournalViewModel
 import java.text.SimpleDateFormat

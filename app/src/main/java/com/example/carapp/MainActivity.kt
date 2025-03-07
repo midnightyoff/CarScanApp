@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.carapp.presentation.mainviewmodel.MainViewModel
 import com.example.carapp.ui.navigation.BottomNavBar
 import com.example.carapp.ui.navigation.Screen
+import com.example.carapp.ui.screens.errorscreen.ErrorCodesScreen
 import com.example.carapp.ui.screens.journal.JournalScreen
 import com.example.carapp.ui.screens.mainscreen.MainScreen
 import com.example.carapp.ui.screens.terminal.TerminalScreen
@@ -45,13 +46,16 @@ fun MainNavigation() {
         NavHost(
             navController = navController,
             startDestination = Screen.Main.route,
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
+            route = "root"
         ) {
             composable(Screen.Journal.route) { val mainViewModel: MainViewModel = viewModel()
                 JournalScreen(carId = mainViewModel.selectedCar.value?.id)  }
             composable(Screen.Main.route) { MainScreen(navController) }
             composable(Screen.Settings.route) { SettingsScreen() }
             composable(Screen.Terminal.route) { TerminalScreen(navController) }
+            composable(Screen.ErrorCodes.route) { ErrorCodesScreen(navController)
+            }
         }
     }
 }

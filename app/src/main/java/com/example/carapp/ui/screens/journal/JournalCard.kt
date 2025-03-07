@@ -34,7 +34,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.carapp.data.model.JournalItem
+import com.example.carapp.domain.model.JournalItem
 import java.text.SimpleDateFormat
 import java.util.Locale
 

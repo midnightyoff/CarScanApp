@@ -14,7 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.carapp.data.model.Car
+import com.example.carapp.domain.model.Car
 import java.time.LocalDate
 
 @Composable
