@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.carapp.obd2.ObdCustomCommand
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

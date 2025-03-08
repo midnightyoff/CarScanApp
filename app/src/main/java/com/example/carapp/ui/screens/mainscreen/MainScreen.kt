@@ -1,6 +1,8 @@
 package com.example.carapp.ui.screens.mainscreen
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,20 +50,24 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.carapp.domain.model.Car
 import com.example.carapp.data.bluetooth.BluetoothManager
+import com.example.carapp.obd2.ObdConnection
+import com.example.carapp.presentation.ObdConnectionViewModel
 import com.example.carapp.presentation.mainviewmodel.MainViewModel
 import com.example.carapp.ui.navigation.Screen
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 @Composable
 fun MainScreen(navController: NavController) {
     val viewModel: MainViewModel = viewModel()
+    val obdViewModel: ObdConnectionViewModel = viewModel()
     val context = LocalContext.current
     val activity = context as Activity
     val scope = rememberCoroutineScope()
@@ -71,6 +77,7 @@ fun MainScreen(navController: NavController) {
     val showDeviceDialog = remember { mutableStateOf(false) }
     val showPermissionDialog = remember { mutableStateOf(false) }
     var obdConnection by remember { mutableStateOf<ObdConnection?>(null) }
+    var obdAdapter by remember { mutableStateOf<Elm327BluetoothAdapter?>(null) }
 
     val showDevices = {
         viewModel.bondedDevices.clear()
@@ -178,15 +185,40 @@ fun MainScreen(navController: NavController) {
                                     isConnected = bluetoothManager.isConnected(device),
                                     onConnect = {
                                         scope.launch {
+//                                            if (ActivityCompat.checkSelfPermission(
+//                                                    context,
+//                                                    Manifest.permission.BLUETOOTH_CONNECT
+//                                                ) != PackageManager.PERMISSION_GRANTED
+//                                            ) {
+//                                                // TODO: Consider calling
+//                                                //    ActivityCompat#requestPermissions
+//                                                // here to request the missing permissions, and then overriding
+//                                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                //                                          int[] grantResults)
+//                                                // to handle the case where the user grants the permission. See the documentation
+//                                                // for ActivityCompat#requestPermissions for more details.
+//                                                return@launch
+//                                            }
+//                                            try {
+//                                                val socket = device.createRfcommSocketToServiceRecord(Elm327BluetoothAdapter.uuid())
+//                                                socket.connect()
+//                                                obdAdapter = Elm327BluetoothAdapter(socket)
+//                                                showDeviceDialog.value = false
+//                                            } catch (_: IOException) {
+//                                                Toast.makeText(
+//                                                    context,
+//                                                    "Ошибка подключения",
+//                                                    Toast.LENGTH_SHORT
+//                                                ).show()
+//                                            }
+
                                             val success =
                                                 bluetoothManager.connectToDevice(context, device)
                                             if (success) {
                                                 val input = bluetoothManager.getInputStream()
                                                 val output = bluetoothManager.getOutputStream()
                                                 if (input != null && output != null) {
-                                                    obdConnection = ObdConnection(input, output)
-                                                    // Инициализация OBD-соединения
-                                                    obdConnection?.initialize(context)
+                                                    obdViewModel.setConnection(ObdConnection(input, output))
                                                     showDeviceDialog.value = false
                                                 }
                                             } else {

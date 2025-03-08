@@ -27,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,17 +43,25 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.carapp.presentation.ObdConnectionViewModel
 import com.example.carapp.presentation.terminalviewmodel.TerminalMessage
 import com.example.carapp.presentation.terminalviewmodel.TerminalViewModel
 
 @Composable
 fun TerminalScreen(navController: NavController) {
     val viewModel: TerminalViewModel = viewModel()
+    val obdViewModel: ObdConnectionViewModel = viewModel()
+    val lastResponse by obdViewModel.lastResponse.collectAsState()
     rememberScrollState()
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+    LaunchedEffect(lastResponse) {
+        lastResponse.let { response ->
+            viewModel.messages.add(TerminalMessage.Response(response.toString()))
+        }
     }
 
     Column(
@@ -120,7 +130,10 @@ fun TerminalScreen(navController: NavController) {
                 ),
                 trailingIcon = {
                     IconButton(
-                        onClick = { viewModel.sendCommand(viewModel.inputText) },
+                        onClick = {
+                                    viewModel.messages.add(TerminalMessage.Command(viewModel.inputText))
+                                    obdViewModel.sendCommand(viewModel.inputText)
+                                  },
                         enabled = viewModel.inputText.isNotBlank(),
                         modifier = Modifier.size(48.dp)
                     ) {
