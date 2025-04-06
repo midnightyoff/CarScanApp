@@ -13,11 +13,11 @@ import com.example.carapp.obd2.ObdResponse
         |______| |______| |_______||_______||_______||_______|
  */
 class Mod1CommandsManager : ObdCommandsManager {
+    private val commands = mapOf(
+        "0D" to VehicleSpeed(),
+        "OC" to EngineSpeed()
+    )
     override fun getCommand(pid: String): ObdCommand {
-        val commands = mapOf(
-            "0D" to VehicleSpeed(),
-            "OC" to EngineSpeed()
-        )
         val command = commands[pid] ?: throw NoSuchElementException("Unsupported obd pid: \"${pid}\"")
         return command
     }
@@ -31,7 +31,8 @@ class VehicleSpeed : ObdCommand() {
             throw IllegalArgumentException("DATA ERROR. Invalid VehicleSpeed input: ${data}")
 
         // data example: 3E
-        return ObdResponse(getVehicleSpeed(data[0]).toString())
+        val value = getVehicleSpeed(data[0])
+        return ObdResponse(value.toString())
     }
     // 0 to	255 km/h
     fun getVehicleSpeed(firstHex: String): Int {

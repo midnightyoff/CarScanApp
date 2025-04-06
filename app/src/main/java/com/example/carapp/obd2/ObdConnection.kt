@@ -1,6 +1,7 @@
 package com.example.carapp.obd2
 
 import com.example.carapp.obd2.mod1.VehicleSpeed
+import com.example.carapp.obd2.mod3.DtcDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -27,16 +28,7 @@ class ObdConnection(
         }
         return result.toString().trim()
     }
-    //    fun polling() {
-//        val results = mutableMapOf</*pid mode*/String, ObdResponse>()
-//        val commands = listOf(VehicleSpeed(), VehicleSpeed())
-//        while (true) {
-//            for (command in commands) {
-//                val response = send(command)
-//                results[command] = response
-//            }
-//        }
-//    }
+
     suspend fun send(command: ObdCommand): ObdResponse = runBlocking {
         withContext(Dispatchers.IO) {
             outputStream.write("${command.value}\r".toByteArray())
@@ -46,4 +38,14 @@ class ObdConnection(
         }
     }
 
+//    suspend fun readDtc(): ObdResponse = runBlocking { // TODO вынести выше, класс будет содержать connection?
+//        withContext(Dispatchers.IO) {
+//            outputStream.write("03\r".toByteArray())
+//            outputStream.flush()
+//            val response = readResponse()
+////            val frame = ObdFrame.parseResponse(response)
+//            val troubleCodes = DtcDecoder.decode(response)
+//            DtcResponse("", troubleCodes) // TODO rawValue
+//        }
+//    }
 }

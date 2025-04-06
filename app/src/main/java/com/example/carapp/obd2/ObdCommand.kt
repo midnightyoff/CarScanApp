@@ -7,6 +7,15 @@ abstract class ObdCommand {
         get() = listOf(mode, pid).joinToString(" ")
     // TODO maybe change data type to ObdFrame
     abstract fun decode(data: List<String>): ObdResponse
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ObdCommand) return false
+        return this.mode == other.mode && this.pid == other.pid
+    }
+    override fun hashCode(): Int {
+        return 31 * mode.hashCode() + pid.hashCode()
+    }
     override fun toString(): String { return value }
 }
 // TODO ObdCustomCommand надо как-то регистрировать команду и позволить передать decode

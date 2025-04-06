@@ -2,11 +2,8 @@ package com.example.carapp.obd2.mode1
 
 import com.example.carapp.obd2.mod1.EngineSpeed
 import com.example.carapp.obd2.mod1.VehicleSpeed
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
@@ -31,7 +28,7 @@ class VehicleSpeedTest(private val input: List<String>, private val expected: In
     @Test
     fun `decode speed`() {
         val response = VehicleSpeed().decode(input)
-        val speed = response.value.toInt()
+        val speed = response.data.toInt()
         Assertions.assertEquals(speed, expected)
     }
 }
@@ -46,16 +43,16 @@ class EngineSpeedTest(private val input: List<String>, private val expected: Dou
 //            arrayOf("410CFFFF", 16_383.75),
 //            arrayOf("410C200D", 2051.25)
 
-            arrayOf(listOf("00"), 0.0),
-            arrayOf(listOf("FF"), 16_383.75),
-            arrayOf(listOf("0D"), 2051.25)
+            arrayOf(listOf("0000"), 0.0),
+            arrayOf(listOf("FFFF"), 16_383.75),
+            arrayOf(listOf("200D"), 2051.25)
         )
     }
 
     @Test
     fun `decode speed`() {
         val response = EngineSpeed().decode(input)
-        val rpm = response.value.toDouble()
+        val rpm = response.data.toDouble()
         Assertions.assertEquals(rpm, expected, 0.01)
     }
 }
