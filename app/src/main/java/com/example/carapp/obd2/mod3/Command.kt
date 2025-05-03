@@ -79,29 +79,36 @@ class DtcDecoder {
             example: 0133
         */
         fun decodeDtc(input: String): ObdDtc {
-            val firstByteStr = input.substring(0, 2)
-            val secondByteStr = input.substring(2, 4)
+            Int
+            val b1 = input.substring(0, 2).toInt(16)
+            val b2 = input.substring(2, 4).toInt(16)
 
-            val firstByte = firstByteStr.toInt(16)
+            val category = (b1 and 0b11000000) shr 6
+            val dtcCategories = listOf('P', 'C', 'B', 'U')
+
+//            val firstByte = firstByteStr.toInt(16)
 //            val secondByte = secondByteStr.toInt(16)
             // get category
-            val category = when (firstByte shr 6) { // first two bits of the first byte represent the category
-                0b00 -> "P" // Powertrain
-                0b01 -> "C" // Chassis
-                0b10 -> "B" // Body
-                0b11 -> "U" // Network
-                else -> "" // throw IllegalStateException("Недопустимые биты категории")
-            }
+//            val category = when (firstByte shr 6) { // first two bits of the first byte represent the category
+//                0b00 -> "P" // Powertrain
+//                0b01 -> "C" // Chassis
+//                0b10 -> "B" // Body
+//                0b11 -> "U" // Network
+//                else -> "" // throw IllegalStateException("Недопустимые биты категории")
+//            }
             // get number
 //            val number = (firstByte and 0b00111111) shl 6 + secondByte // remaining 14 bits of the two bytes represent the number
-            val remainingBits = (firstByte and 0b00111111).toString(16).uppercase().padStart(2, '0')
-            val dtcCode = category + remainingBits + secondByteStr.uppercase()
-            try {
-                val description = getDescription(dtcCode)
-                return ObdDtc(dtcCode, description)
-            } catch (_: NoSuchElementException) {
-                return ObdDtc(dtcCode, "")
-            }
+
+//            val remainingBits = (firstByte and 0b00111111).toString(16).uppercase().padStart(2, '0')
+//            val dtcCode = category + remainingBits + secondByteStr.uppercase()
+//            try {
+//                val description = getDescription(dtcCode)
+//                return ObdDtc(dtcCode, description)
+//            } catch (_: NoSuchElementException) {
+//                return ObdDtc(dtcCode, "")
+//            }
+
+            return ObdDtc("", "")
         }
     }
 }

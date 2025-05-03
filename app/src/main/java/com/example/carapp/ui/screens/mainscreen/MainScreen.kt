@@ -65,9 +65,8 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewModel) {
     val viewModel: MainViewModel = viewModel()
-    val obdViewModel: ObdConnectionViewModel = viewModel()
     val context = LocalContext.current
     val activity = context as Activity
     val scope = rememberCoroutineScope()
@@ -264,7 +263,7 @@ fun MainScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 ButtonCard(
-                    text = "Реальные данные",
+                    text = "Данные в реальном времени",
                     icon = Icons.Default.Wifi,
                     onClick = { /* Данные в реальном времени */ }
                 )

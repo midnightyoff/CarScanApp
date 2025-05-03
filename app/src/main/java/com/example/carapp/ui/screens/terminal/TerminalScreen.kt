@@ -48,9 +48,8 @@ import com.example.carapp.presentation.terminalviewmodel.TerminalMessage
 import com.example.carapp.presentation.terminalviewmodel.TerminalViewModel
 
 @Composable
-fun TerminalScreen(navController: NavController) {
+fun TerminalScreen(navController: NavController, obdViewModel: ObdConnectionViewModel) {
     val viewModel: TerminalViewModel = viewModel()
-    val obdViewModel: ObdConnectionViewModel = viewModel()
     val lastResponse by obdViewModel.lastResponse.collectAsState()
     rememberScrollState()
     val focusRequester = remember { FocusRequester() }

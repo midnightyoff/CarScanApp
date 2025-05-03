@@ -26,9 +26,11 @@ class ObdCustomCommand(override val mode: String, override val pid: String) : Ob
     companion object {
         fun getCommand(input: String): ObdCustomCommand {
             val cleaned = input.replace(" ", "").trim()
-            require(cleaned.length >= 4) { "Command string must be at least 4 characters long" }
+//            require(cleaned.length >= 4) { "Command string must be at least 4 characters long" }
             val mode = cleaned.take(2)
-            val pid = cleaned.drop(2)
+            var pid = ""
+            if (cleaned.length > 2)
+                pid = cleaned.drop(2)
             return ObdCustomCommand(mode, pid)
         }
     }

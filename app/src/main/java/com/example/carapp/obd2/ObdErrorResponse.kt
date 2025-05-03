@@ -2,7 +2,7 @@ package com.example.carapp.obd2
 
 import com.example.carapp.presentation.terminalviewmodel.TerminalMessage
 
-class ObdErrorResponse(
+class ObdErrorResponse( // ObdStatusResponse
     val type: ObdResponseErrorType
 ) : ObdResponse("")
 

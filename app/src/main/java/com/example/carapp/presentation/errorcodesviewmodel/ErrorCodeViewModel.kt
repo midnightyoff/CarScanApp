@@ -12,6 +12,7 @@ class ErrorCodesViewModel(application: Application) : AndroidViewModel(applicati
 
     init {
         loadMockData()
+
     }
 
     private fun loadMockData() {

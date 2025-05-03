@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.carapp.presentation.ObdConnectionViewModel
 import com.example.carapp.presentation.mainviewmodel.MainViewModel
 import com.example.carapp.ui.navigation.BottomNavBar
 import com.example.carapp.ui.navigation.Screen
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
-
+    val obdViewModel: ObdConnectionViewModel = viewModel()
     Scaffold(
         bottomBar = { BottomNavBar(navController) }
     ) { padding ->
@@ -51,9 +52,9 @@ fun MainNavigation() {
         ) {
             composable(Screen.Journal.route) { val mainViewModel: MainViewModel = viewModel()
                 JournalScreen(carId = mainViewModel.selectedCar.value?.id)  }
-            composable(Screen.Main.route) { MainScreen(navController) }
+            composable(Screen.Main.route) { MainScreen(navController, obdViewModel) }
             composable(Screen.Settings.route) { SettingsScreen() }
-            composable(Screen.Terminal.route) { TerminalScreen(navController) }
+            composable(Screen.Terminal.route) { TerminalScreen(navController, obdViewModel) }
             composable(Screen.ErrorCodes.route) { ErrorCodesScreen(navController)
             }
         }

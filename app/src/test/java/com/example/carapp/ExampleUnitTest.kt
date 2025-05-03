@@ -17,6 +17,17 @@ import java.io.OutputStream
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+        repeat(3) { attempt ->
+            try {
+                // Clear input buffer
+
+                println("Yes")
+                // Read response
+                return
+            } catch (e: Exception) {
+                Thread.sleep(100) // Delay between attempts
+            }
+        }
 //        val input = "7E8 03 41 0D 2C \r7EA 03 41 0D 2C \r\r>"
 //        val result = input.substringAfter('\r')
 //

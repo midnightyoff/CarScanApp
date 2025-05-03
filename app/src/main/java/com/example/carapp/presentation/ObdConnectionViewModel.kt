@@ -1,5 +1,6 @@
 package com.example.carapp.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carapp.obd2.ObdConnection
@@ -10,22 +11,27 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ObdConnectionViewModel : ViewModel() {
-    private val _connection = MutableStateFlow<ObdConnection?>(null)
-    val connection: StateFlow<ObdConnection?> get() = _connection
+//    private val _connection = MutableStateFlow<ObdConnection?>(null)
+//    val connection: StateFlow<ObdConnection?> get() = _connection
 
     private val _lastResponse  = MutableStateFlow<ObdResponse>(ObdResponse(""))
     val lastResponse: StateFlow<ObdResponse> get() = _lastResponse
 
+    private var connection: ObdConnection? = null
+
     fun setConnection(obdConnection: ObdConnection) {
-        _connection.value = obdConnection
+//        _connection.value = obdConnection
+        connection = obdConnection
     }
 
     fun sendCommand(command: String) {
+        Log.d("", "send: ${command}")
         val obdCommand = ObdCustomCommand.getCommand(command)
         viewModelScope.launch {
-            val obdResponse = _connection.value?.send(obdCommand)
-            if (obdResponse != null) {
-                _lastResponse.value = obdResponse
+//            val obdResponse = _connection.value?.send(obdCommand)
+            val response = connection?.send(obdCommand)
+            if (response != null) {
+                _lastResponse.value = ObdResponse(response)
             }
         }
     }

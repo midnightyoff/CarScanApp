@@ -40,13 +40,14 @@ class ObdFrame(
 ) {
     companion object {
         fun parseResponse(input: String): ObdFrame {
+            var cleanedInput = input.replace("SEARCHING...", "").trim()
             /*
                 input examples:
                 41 0D 0C \r\r> // headerOff
                 7EA 03 41 0D 0C \r\r> // headerOn
                 18DAF110 03 41 0D 09 \r\r> // headerOn
              */
-            val cleanedInput = input.replace("\r", "").replace(">", "").trim()
+            cleanedInput = cleanedInput.replace("\r", "").replace(">", "")
             /*
                 cleanedInput examples:
                 41 0D 0C // headerOff
