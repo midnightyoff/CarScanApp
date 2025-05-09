@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,10 +30,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.carapp.domain.model.DiagnosticError
+import com.example.carapp.obd2.DtcResponse
+import com.example.carapp.obd2.mod3.ShowDiagnosticTroubleCodes
+import com.example.carapp.presentation.ObdConnectionViewModel
 import com.example.carapp.presentation.errorcodesviewmodel.ErrorCodesViewModel
 
 @Composable
-fun ErrorCodesScreen(navController: NavController) {
+fun ErrorCodesScreen(navController: NavController, obdViewModel: ObdConnectionViewModel) {
     val viewModel: ErrorCodesViewModel = viewModel()
     val errors by remember { viewModel.errors }.collectAsStateWithLifecycle()
 
@@ -61,6 +65,25 @@ fun ErrorCodesScreen(navController: NavController) {
                 text = "Считывание ошибок",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(start = 16.dp))
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+                    val response = obdViewModel.sendCommand(ShowDiagnosticTroubleCodes())
+                    if (response is DtcResponse) {
+                        viewModel.setErrors(response.troubleCodes)
+                    }
+                },
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text("Считать ошибки")
+            }
         }
 
         Column(

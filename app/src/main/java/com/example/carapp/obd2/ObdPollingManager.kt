@@ -49,9 +49,11 @@ class Monitor(val sensor: Mod1Sensor) : Observer {
     }
 }
 */
-interface MeasurementCommandListener {
-    fun onNewData(response: MeasurementResponse)
-}
+typealias MeasurementCallback = (response: MeasurementResponse) -> Unit
+
+//interface MeasurementCommandListener {
+//    fun onNewData(response: MeasurementResponse)
+//}
 
 class ObdResponsesBuffer(private val inputStream: InputStream) {
     private val responses: MutableList<String> = mutableListOf()
@@ -92,20 +94,20 @@ class ObdPollingManager(
     val responseBuffer = ObdResponsesBuffer(obdConnection.inputStream)
     //    private val sensors = HashMap<String /* PID */, Mod1Sensor>()
     private val measurementListeners =
-        HashMap<ObdCommand, MutableList<MeasurementCommandListener>>()
+        HashMap<ObdCommand, MutableList<MeasurementCallback>>()
 
-    fun subscribe(command: ObdCommand, listener: MeasurementCommandListener) { // TODO thread safe
-        measurementListeners.getOrPut(command) { mutableListOf() }.add(listener)
+    fun subscribe(command: ObdCommand, callback: MeasurementCallback) { // TODO thread safe
+        measurementListeners.getOrPut(command) { mutableListOf() }.add(callback)
     }
 
-    fun unsubscribe(command: ObdCommand, listener: MeasurementCommandListener) {
-        measurementListeners[command]?.remove(listener)
+    fun unsubscribe(command: ObdCommand, callback: MeasurementCallback) {
+        measurementListeners[command]?.remove(callback)
     }
 
     private fun updateListeners(command: ObdCommand, response: MeasurementResponse) {
         val listeners = measurementListeners[command] ?: return
         for (listener in listeners)
-            listener.onNewData(response)
+            listener.invoke(response)
     }
     /**
         \param[in] interval time in ms
@@ -113,13 +115,13 @@ class ObdPollingManager(
     fun start(interval: Long = 500L) { // startPolling
         coroutineScope.launch {
             while (isActive) {
-                measurementListeners.keys.forEach { command ->
+                for (command in measurementListeners.keys) {
                     try {
                         obdConnection.writeAndFlush(command)
+                        delay(interval)
                         responseBuffer.readAvailableResponses()
                         for (data in responseBuffer.takeAllResponses()) {
-                            val response = ObdDecoder.parseResponse(data)
-                            when (response) {
+                            when (val response = ObdDecoder.parseResponse(data)) {
                                 is MeasurementResponse -> {
                                     updateListeners(command, response)
                                 }

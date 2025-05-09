@@ -6,7 +6,7 @@ abstract class ObdCommand {
     val value: String
         get() = listOf(mode, pid).joinToString(" ")
     // TODO maybe change data type to ObdFrame
-    abstract fun decode(data: List<String>): ObdResponse
+    abstract fun decode(data: String): ObdResponse
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -20,8 +20,8 @@ abstract class ObdCommand {
 }
 // TODO ObdCustomCommand надо как-то регистрировать команду и позволить передать decode
 class ObdCustomCommand(override val mode: String, override val pid: String) : ObdCommand() {
-    override fun decode(data: List<String>): ObdResponse {
-        return ObdResponse(data.joinToString())
+    override fun decode(data: String): ObdResponse {
+        return ObdResponse(data)
     }
     companion object {
         fun getCommand(input: String): ObdCustomCommand {

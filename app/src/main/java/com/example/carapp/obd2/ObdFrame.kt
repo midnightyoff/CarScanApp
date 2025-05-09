@@ -31,6 +31,13 @@ package com.example.carapp.obd2
     has a description and some have a specified min/max and conversion formula.
  */
 
+/*
+
+    ^
+    |
+    CANIdentifier
+
+*/
 class ObdFrame(
     val identifier: String,
     val length: Int,
@@ -83,7 +90,7 @@ class ObdFrame(
             return ObdFrame(identifier, length, mode, pid, data)
         }
 
-        fun isCANIdentifier(value: Int): Boolean {
+         fun isCANIdentifier(value: Int): Boolean {
             return is11BitCANIdentifier(value) || is29BitCANIdentifier(value)
         }
 

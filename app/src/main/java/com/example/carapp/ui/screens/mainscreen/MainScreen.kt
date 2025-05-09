@@ -21,8 +21,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Airplay
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Info
@@ -246,16 +249,20 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            ButtonCard(
-                text = "Терминал",
-                icon = Icons.Default.Terminal,
-                onClick = { navController.navigate(Screen.Terminal.route) },
-                modifier = Modifier.fillMaxWidth(0.6f)
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                ButtonCard(
+                    text = "Терминал",
+                    icon = Icons.Default.Terminal,
+                    onClick = { navController.navigate(Screen.Terminal.route) },
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -265,7 +272,7 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
                 ButtonCard(
                     text = "Данные в реальном времени",
                     icon = Icons.Default.Wifi,
-                    onClick = { /* Данные в реальном времени */ }
+                    onClick = { navController.navigate(Screen.ShowCurrentData.route) }
                 )
                 ButtonCard(
                     text = "Считать ошибки",

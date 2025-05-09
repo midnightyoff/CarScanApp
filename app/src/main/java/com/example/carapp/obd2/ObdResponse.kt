@@ -13,7 +13,7 @@ open class ObdResponse(
 data class MeasurementResponse(val value: Double, val unit: String): ObdResponse("$value $unit")
 
 data class DtcResponse (
-    val troubleCodes: List<ObdDtc>
+    val troubleCodes: List<String>
 ) : ObdResponse(troubleCodes.joinToString("\n")) {
     override fun toString(): String {
         return troubleCodes.joinToString("\n")

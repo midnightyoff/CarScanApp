@@ -76,37 +76,22 @@ class ObdConnection(
         outputStream.write("${command.value}\r".toByteArray())
         outputStream.flush()
     }
-    fun readResponse(): String {
-        val result = StringBuffer()
-        while (inputStream.available() > 0) {
-            val byte = inputStream.read().toByte()
-            if (byte < 0) // это типа EOF?
-                break
-
-            val char = byte.toInt().toChar()
-            if ('>' == char)
-                break
-
-            result.append(char)
-        }
-        return result.toString().trim()
-    }
-
-    suspend fun send(command: ObdCommand): ObdResponse = runBlocking {
-        withContext(Dispatchers.IO) {
-            outputStream.write("${command.value}\r".toByteArray())
-            outputStream.flush()
-            val response = readResponse()
-            ObdDecoder.parseResponse(response)
-        }
-    }
-    suspend fun send(command: ObdCustomCommand): String = runBlocking {
-        withContext(Dispatchers.IO) {
-            outputStream.write("${command.value}\r".toByteArray())
-            outputStream.flush()
-            readResponse()
-        }
-    }
+//    fun readResponse(): String {
+//        val result = StringBuffer()
+//        while (inputStream.available() > 0) {
+//            val byte = inputStream.read().toByte()
+//            if (byte < 0) // это типа EOF?
+//                break
+//
+//            val char = byte.toInt().toChar()
+//            if ('>' == char)
+//                break
+//
+//            result.append(char)
+//        }
+//        return result.toString().trim()
+//    }
+//    }
 
 //    suspend fun readDtc(): ObdResponse = runBlocking { // TODO вынести выше, класс будет содержать connection?
 //        withContext(Dispatchers.IO) {

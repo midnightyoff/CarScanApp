@@ -4,10 +4,18 @@ import com.example.carapp.obd2.ObdCommand
 import com.example.carapp.obd2.ObdCommandsManager
 import com.example.carapp.obd2.ObdResponse
 
+//class Mode3Decoder : ObdModeDecoder {
+//    override fun decode(pid: String, data: String): ObdResponse {
+//
+//    }
+//}
+
 class ShowDiagnosticTroubleCodes : ObdCommand() {
     override val mode = "03"
     override val pid = ""
-    override fun decode(data: List<String>): ObdResponse {
+    override fun decode(data: String): ObdResponse {
+//        "4700035104A1AB\r47F10600000000"
+//        "47 0003 5104 A1AB\r47 F106 0000 0000"
 //        return DtcDecoder.decode(data)
         return ObdResponse("TODO")
     }
@@ -18,7 +26,7 @@ class Mod3CommandsManager : ObdCommandsManager {
     }
 }
 
-data class ObdDtc(val dtc: String, val description: String)
+data class ObdDtc(val code: String, val description: String)
 
 /*
     \details

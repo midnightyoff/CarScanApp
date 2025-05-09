@@ -1,14 +1,13 @@
-package com.example.carapp.obd2.mode1
+package com.example.carapp.obd2.mod1
 
-import com.example.carapp.obd2.mod1.EngineSpeed
-import com.example.carapp.obd2.mod1.VehicleSpeed
+import com.example.carapp.obd2.ObdDecoder
 import org.junit.Test
 import org.junit.jupiter.api.Assertions
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class VehicleSpeedTest(private val input: List<String>, private val expected: Int) {
+class VehicleSpeedTest(private val input: String, private val expected: Int) {
     companion object {
         @JvmStatic
         @Parameterized.Parameters
@@ -18,10 +17,10 @@ class VehicleSpeedTest(private val input: List<String>, private val expected: In
 //            arrayOf("410D15", 21),
 //            arrayOf("410D40", 64)
 
-            arrayOf(listOf("00"), 0),
-            arrayOf(listOf("FF"), 255),
-            arrayOf(listOf("15"), 21),
-            arrayOf(listOf("40"), 64)
+            arrayOf("00", 0),
+            arrayOf("FF", 255),
+            arrayOf("15", 21),
+            arrayOf("40", 64)
         )
     }
 
@@ -34,7 +33,7 @@ class VehicleSpeedTest(private val input: List<String>, private val expected: In
 }
 
 @RunWith(Parameterized::class)
-class EngineSpeedTest(private val input: List<String>, private val expected: Double) {
+class EngineSpeedTest(private val input: String, private val expected: Double) {
     companion object {
         @JvmStatic
         @Parameterized.Parameters
@@ -43,9 +42,9 @@ class EngineSpeedTest(private val input: List<String>, private val expected: Dou
 //            arrayOf("410CFFFF", 16_383.75),
 //            arrayOf("410C200D", 2051.25)
 
-            arrayOf(listOf("0000"), 0.0),
-            arrayOf(listOf("FFFF"), 16_383.75),
-            arrayOf(listOf("200D"), 2051.25)
+            arrayOf("0000", 0.0),
+            arrayOf("FFFF", 16_383.75),
+            arrayOf("200D", 2051.25)
         )
     }
 
@@ -54,5 +53,15 @@ class EngineSpeedTest(private val input: List<String>, private val expected: Dou
         val response = EngineSpeed().decode(input)
         val rpm = response.data.toDouble()
         Assertions.assertEquals(rpm, expected, 0.01)
+    }
+}
+
+class ObdMode1DecoderTest {
+    @Test
+    fun `decode mod1 responses`() {
+        run {
+            val response = ObdDecoder.parseResponse("41 0D 04 \r41 0D 04 \r\r")
+            Assertions.assertEquals(response.data, "4")
+        }
     }
 }

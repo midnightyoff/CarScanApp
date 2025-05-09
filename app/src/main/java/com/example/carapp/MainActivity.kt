@@ -22,6 +22,7 @@ import com.example.carapp.ui.screens.journal.JournalScreen
 import com.example.carapp.ui.screens.mainscreen.MainScreen
 import com.example.carapp.ui.screens.terminal.TerminalScreen
 import com.example.carapp.ui.screens.settings.SettingsScreen
+import com.example.carapp.ui.screens.showcurrentdata.ShowCurrentDataScreen
 import com.example.carapp.ui.theme.CarAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,13 +51,14 @@ fun MainNavigation() {
             modifier = Modifier.padding(padding),
             route = "root"
         ) {
+            // TODO try catch
             composable(Screen.Journal.route) { val mainViewModel: MainViewModel = viewModel()
                 JournalScreen(carId = mainViewModel.selectedCar.value?.id)  }
             composable(Screen.Main.route) { MainScreen(navController, obdViewModel) }
             composable(Screen.Settings.route) { SettingsScreen() }
             composable(Screen.Terminal.route) { TerminalScreen(navController, obdViewModel) }
-            composable(Screen.ErrorCodes.route) { ErrorCodesScreen(navController)
-            }
+            composable(Screen.ErrorCodes.route) { ErrorCodesScreen(navController, obdViewModel) }
+            composable(Screen.ShowCurrentData.route) { ShowCurrentDataScreen(navController, obdViewModel) }
         }
     }
 }
