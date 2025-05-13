@@ -78,12 +78,14 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
     val bluetoothManager = remember { BluetoothManager(context) }
     val showDeviceDialog = remember { mutableStateOf(false) }
     val showPermissionDialog = remember { mutableStateOf(false) }
-    var obdConnection by remember { mutableStateOf<ObdConnection?>(null) }
-    var obdAdapter by remember { mutableStateOf<Elm327BluetoothAdapter?>(null) }
 
     val showDevices = {
         viewModel.bondedDevices.clear()
         viewModel.bondedDevices.addAll(bluetoothManager.getBondedDevices(context))
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.isConnected.value = bluetoothManager.isConnected()
     }
 
     LaunchedEffect(showDeviceDialog.value) {
@@ -192,7 +194,7 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
 //                                                    Manifest.permission.BLUETOOTH_CONNECT
 //                                                ) != PackageManager.PERMISSION_GRANTED
 //                                            ) {
-//                                                // TODO: Consider calling
+//                                                //
 //                                                //    ActivityCompat#requestPermissions
 //                                                // here to request the missing permissions, and then overriding
 //                                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -214,9 +216,9 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
 //                                                ).show()
 //                                            }
 
-                                            val success =
-                                                bluetoothManager.connectToDevice(context, device)
+                                            val success = bluetoothManager.connectToDevice(context, device)
                                             if (success) {
+                                                viewModel.isConnected.value = true
                                                 val input = bluetoothManager.getInputStream()
                                                 val output = bluetoothManager.getOutputStream()
                                                 if (input != null && output != null) {
@@ -259,7 +261,12 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
                 ButtonCard(
                     text = "Терминал",
                     icon = Icons.Default.Terminal,
-                    onClick = { navController.navigate(Screen.Terminal.route) },
+                    onClick = {
+                        if (viewModel.isConnected.value)
+                            navController.navigate(Screen.Terminal.route)
+                        else
+                            Toast.makeText(context,"Нет установленного подключения", Toast.LENGTH_SHORT).show()
+                              },
                 )
             }
 
@@ -272,12 +279,22 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
                 ButtonCard(
                     text = "Данные в реальном времени",
                     icon = Icons.Default.Wifi,
-                    onClick = { navController.navigate(Screen.ShowCurrentData.route) }
+                    onClick = {
+                        if (viewModel.isConnected.value)
+                            navController.navigate(Screen.ShowCurrentData.route)
+                        else
+                            Toast.makeText(context,"Нет установленного подключения", Toast.LENGTH_SHORT).show()
+                    }
                 )
                 ButtonCard(
                     text = "Считать ошибки",
                     icon = Icons.Default.Warning,
-                    onClick = { navController.navigate(Screen.ErrorCodes.route) }
+                    onClick = {
+                        if (viewModel.isConnected.value)
+                            navController.navigate(Screen.ErrorCodes.route)
+                        else
+                            Toast.makeText(context,"Нет установленного подключения", Toast.LENGTH_SHORT).show()
+                    }
                 )
             }
 
@@ -289,12 +306,22 @@ fun MainScreen(navController: NavController, obdViewModel: ObdConnectionViewMode
                 ButtonCard(
                     text = "Сбросить ошибки",
                     icon = Icons.Default.RestartAlt,
-                    onClick = { /* Сбросить ошибки */ }
+                    onClick = {
+                        if (viewModel.isConnected.value)
+                            navController.navigate(Screen.ErrorCodes.route)
+                        else
+                            Toast.makeText(context,"Нет установленного подключения", Toast.LENGTH_SHORT).show()
+                    }
                 )
                 ButtonCard(
                     text = "Инфо по авто",
                     icon = Icons.Default.Info,
-                    onClick = { /* Информация по авто */ }
+                    onClick = {
+                        if (viewModel.isConnected.value)
+                            navController.navigate(Screen.ErrorCodes.route)
+                        else
+                            Toast.makeText(context,"Нет установленного подключения", Toast.LENGTH_SHORT).show()
+                    }
                 )
             }
         }

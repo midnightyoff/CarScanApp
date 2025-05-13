@@ -154,6 +154,9 @@ class BluetoothManager(private val context: Context) {
         }
     }
 
+    fun isConnected(): Boolean {
+        return bluetoothSocket?.isConnected ?: false
+    }
 
     companion object {
         const val REQUEST_ENABLE_BT = 1

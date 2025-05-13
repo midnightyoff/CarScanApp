@@ -18,8 +18,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val carDao = AppDatabase.getInstance(application).carDao()
     private val prefs = application.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
-    private val _isConnected = mutableStateOf(false)
-    val isConnected: State<Boolean> = _isConnected
+    val isConnected = mutableStateOf(false)
+
 
     val cars = carDao.getAll().map { it.map(CarEntity::toCar) }
     val selectedCar = mutableStateOf<Car?>(null)
